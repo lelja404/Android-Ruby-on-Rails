@@ -2,13 +2,14 @@
 <h1> <%= @photo.title %> </h1>
 <b>Posted by:</b> <%= link_to @photo.user.login, @photo.user %> |
 <% if @current_user == @photo.user%>
-  <%= link_to 'Edit', edit_photo_path(@photo) %>
-<% end %>
+ <% end %>
+<%= image_tag(@photo.path, :style => "position:absolute;z-index:1;") %><%# Dave: This now allows the images to 'float', over any content. This helps when customizing the layout that might interfere with the template, when a large image is shown. %>
 <br />
-#<%= @post.content %>
+
+
 <br />
-<%= link_to 'Back', photos_path %>
-<%= render 'comments' %>
+
+
 
 
 

@@ -3,4 +3,5 @@ class Photo < ActiveRecord::Base
   validates_uniqueness_of :path, :thumbnail, :message => "There is already an image in the gallery with this same filename!" 
   belongs_to :user
   has_many :comments, :dependent => :destroy
+  has_many :comment2s
 end

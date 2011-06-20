@@ -10,7 +10,6 @@
 <% end %>
  
 
-<%= textilize h(truncate(photo.description)) %>
 
  
 <br />

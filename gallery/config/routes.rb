@@ -1,4 +1,6 @@
 Gallery::Application.routes.draw do |map|
+  resources :comment2s
+
   resources :comments
 
   resources :posts

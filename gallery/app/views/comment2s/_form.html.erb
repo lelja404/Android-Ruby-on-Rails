@@ -1,0 +1,33 @@
+<%= form_for(@comment2) do |f| %>
+  <% if @comment2.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment2.errors.count, "error") %> prohibited this comment2 from being saved:</h2>
+
+      <ul>
+      <% @comment2.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br />
+    <%= f.text_area :comment %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :photo_id %><br />
+    <%= f.text_field :photo_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

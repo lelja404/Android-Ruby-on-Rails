@@ -1,17 +1,12 @@
 class CreatePhotos < ActiveRecord::Migration
   def self.up
     create_table :photos do |t|
-      t.string :title
-      t.text :description
-      t.string :filename
-      t.string :content_type
-      t.integer :size
-      t.integer :width
-      t.integer :height
-      t.string :path
-      t.string :thumbnail
-      t.integer :user_id
-      t.integer :photo_id
+      t.column :url, :string
+      t.column :thumb_url, :string
+      t.column :width, :string, :default => "0"
+      t.column :height, :string, :default => "0" 
+      t.column :description, :string, :default => "No Description."
+      t.column :user_id, :integer, :default => 1
 
       t.timestamps
     end
