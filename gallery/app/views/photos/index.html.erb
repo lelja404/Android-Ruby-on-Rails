@@ -1,0 +1,43 @@
+<h1>Listing photos</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Filename</th>
+    <th>Content type</th>
+    <th>Size</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th>Path</th>
+    <th>Thumbnail</th>
+    <th>User</th>
+    <th>Parent</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @photos.each do |photo| %>
+  <tr>
+    <td><%= photo.title %></td>
+    <td><%= photo.description %></td>
+    <td><%= photo.filename %></td>
+    <td><%= photo.content_type %></td>
+    <td><%= photo.size %></td>
+    <td><%= photo.width %></td>
+    <td><%= photo.height %></td>
+    <td><%= photo.path %></td>
+    <td><%= photo.thumbnail %></td>
+    <td><%= photo.user_id %></td>
+    <td><%= photo.parent_id %></td>
+    <td><%= link_to 'Show', photo %></td>
+    <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
+    <td><%= link_to 'Destroy', photo, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Photo', new_photo_path %>

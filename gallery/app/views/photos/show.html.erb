@@ -1,0 +1,60 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @photo.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @photo.description %>
+</p>
+
+<p>
+  <b>Filename:</b>
+  <%= @photo.filename %>
+</p>
+
+<p>
+  <b>Content type:</b>
+  <%= @photo.content_type %>
+</p>
+
+<p>
+  <b>Size:</b>
+  <%= @photo.size %>
+</p>
+
+<p>
+  <b>Width:</b>
+  <%= @photo.width %>
+</p>
+
+<p>
+  <b>Height:</b>
+  <%= @photo.height %>
+</p>
+
+<p>
+  <b>Path:</b>
+  <%= @photo.path %>
+</p>
+
+<p>
+  <b>Thumbnail:</b>
+  <%= @photo.thumbnail %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @photo.user_id %>
+</p>
+
+<p>
+  <b>Parent:</b>
+  <%= @photo.parent_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_photo_path(@photo) %> |
+<%= link_to 'Back', photos_path %>
