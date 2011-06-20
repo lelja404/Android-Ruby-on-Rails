@@ -11,7 +11,7 @@ class CreatePhotos < ActiveRecord::Migration
       t.string :path
       t.string :thumbnail
       t.integer :user_id
-      t.integer :parent_id
+      t.integer :photo_id
 
       t.timestamps
     end
