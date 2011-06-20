@@ -20,5 +20,10 @@
 <br />
 <%= link_to 'New Photo', new_photo_path %>
  
-
+#posts/new.html.erb
+<h1>New post</h1>
+<b>User:</b> <%= @current_user.login %>
+<%= render 'form' %>
+ 
+<%= link_to 'Back', posts_path %>
 

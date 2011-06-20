@@ -1,14 +1,5 @@
 <p id="notice"><%= notice %></p>
-<h1> <%= @photo.title %> </h1>
-<b>Posted by:</b> <%= link_to @photo.user.login, @photo.user %> |
-<% if @current_user == @photo.user%>
-  <%= link_to 'Edit', edit_photo_path(@photo) %>
-<% end %>
-<br />
-#<%= @post.content %>
-<br />
-<%= link_to 'Back', photos_path %>
-<%= render 'comments' %>
+
 <p>
   <b>Title:</b>
   <%= @photo.title %>
