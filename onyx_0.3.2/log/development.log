@@ -1,0 +1,641 @@
+# Logfile created on Sun Jun 19 21:24:08 +0700 2011  [4;36;1mSQL (1.1ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (150.8ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (100.8ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateImages (1)
+  [4;36;1mSQL (124.2ms)[0m   [0;1mCREATE TABLE "images" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "url" varchar(255), "thumb_url" varchar(255), "pinky_url" varchar(255), "width" varchar(255) DEFAULT '0', "height" varchar(255) DEFAULT '0', "description" varchar(255) DEFAULT 'No Description.', "category_id" integer DEFAULT 1, "user_id" integer DEFAULT 1, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (98.1ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('1')[0m
+Migrating to CreateUsers (2)
+  [4;36;1mSQL (89.9ms)[0m   [0;1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar(255), "last_name" varchar(255), "username" varchar(255), "password_hash" varchar(255), "salt" varchar(255), "phone_number" varchar(255), "created_at" datetime, "updated_at" datetime, "description" varchar(255)) [0m
+  [4;35;1mUser Exists (0.8ms)[0m   [0mSELECT "users".id FROM "users" WHERE ("users"."username" = 'admin') LIMIT 1[0m
+  [4;36;1mUser Create (1.3ms)[0m   [0;1mINSERT INTO "users" ("salt", "created_at", "updated_at", "username", "phone_number", "last_name", "description", "password_hash", "first_name") VALUES(NULL, '2011-06-19 21:24:09', '2011-06-19 21:24:09', 'admin', NULL, 'Doe', 'I am a cool person!', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'John')[0m
+  [4;35;1mSQL (88.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('2')[0m
+Migrating to CreateCategories (3)
+  [4;36;1mSQL (109.2ms)[0m   [0;1mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "parent_id" integer DEFAULT 0, "description" varchar(255), "created_at" datetime) [0m
+  [4;35;1mCategory Exists (0.6ms)[0m   [0mSELECT "categories".id FROM "categories" WHERE ("categories"."name" = 'General') LIMIT 1[0m
+  [4;36;1mCategory Create (0.8ms)[0m   [0;1mINSERT INTO "categories" ("name", "created_at", "parent_id", "description") VALUES('General', '2011-06-19 21:24:10', 0, 'My Pictures')[0m
+  [4;35;1mCategory Exists (0.7ms)[0m   [0mSELECT "categories".id FROM "categories" WHERE ("categories"."name" = 'Uncategorized') LIMIT 1[0m
+  [4;36;1mCategory Create (1.1ms)[0m   [0;1mINSERT INTO "categories" ("name", "created_at", "parent_id", "description") VALUES('Uncategorized', '2011-06-19 21:24:10', 0, 'Pictures that just don''t belong anywhere.')[0m
+  [4;35;1mSQL (75.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('3')[0m
+Migrating to CreateComments (4)
+  [4;36;1mSQL (80.3ms)[0m   [0;1mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "image_id" integer, "ip" varchar(255), "comment" text, "created_at" datetime) [0m
+  [4;35;1mSQL (85.2ms)[0m   [0mCREATE INDEX "index_comments_on_image_id" ON "comments" ("image_id")[0m
+  [4;36;1mSQL (73.9ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('4')[0m
+Migrating to CreateSettings (5)
+  [4;35;1mSQL (116.8ms)[0m   [0mCREATE TABLE "settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "setting_type" varchar(255), "value" varchar(255), "description" varchar(255), "item_type" varchar(255)) [0m
+  [4;36;1mSQL (102.5ms)[0m   [0;1mCREATE UNIQUE INDEX "index_settings_on_name" ON "settings" ("name")[0m
+  [4;35;1mSetting Exists (0.5ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Create (0.8ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('site_title', 'public', 'My Onyx Gallery', 'The Title of your Site', 'string')[0m
+  [4;35;1mSetting Exists (0.5ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Create (1.0ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('site_keywords', 'public', 'Ruby on Rails Gallery, open source, ruby on rails, gallery, onyx gallery, gallery software, hulihan applications', 'The Keywords Metatag for your site. Used for search engine submission', 'string')[0m
+  [4;35;1mSetting Exists (0.5ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Create (0.8ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('site_description', 'public', 'Onyx is an open source free ruby on rails gallery written by Hulihan Applications. It is designed to be easy to use, flexible and customizable.', 'The Description Metatag for your site. Used for search engine submission', 'string')[0m
+  [4;35;1mSetting Exists (0.7ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'welcome_title') LIMIT 1[0m
+  [4;36;1mSetting Create (0.9ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('welcome_title', 'public', 'Welcome!', 'The Welcome Message title that shows on the gallery homepage', 'string')[0m
+  [4;35;1mSetting Exists (0.6ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'welcome_message') LIMIT 1[0m
+  [4;36;1mSetting Create (0.9ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('welcome_message', 'public', 'Welcome to my gallery! Take a look around, leave a comment, and let me know what you think!', 'This is the welcome message that shows on the gallery homepage.', 'string')[0m
+  [4;35;1mSetting Exists (0.4ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'uniform_width') LIMIT 1[0m
+  [4;36;1mSetting Create (0.9ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('uniform_width', 'public', '500', 'This is the width you want your images(of your choice) to be automatically resized to.', 'string')[0m
+  [4;35;1mSetting Exists (0.8ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'uniform_height') LIMIT 1[0m
+  [4;36;1mSetting Create (1.3ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('uniform_height', 'public', '500', 'This is the height you want your images(of your choice) to be automatically resized to.', 'string')[0m
+  [4;35;1mSetting Exists (0.4ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'thumbnail_width') LIMIT 1[0m
+  [4;36;1mSetting Create (0.9ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('thumbnail_width', 'public', '100', 'This is the width you want your thumbnail images(in pixels) to be automatically resized to.', 'string')[0m
+  [4;35;1mSetting Exists (0.8ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'thumbnail_height') LIMIT 1[0m
+  [4;36;1mSetting Create (1.4ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('thumbnail_height', 'public', '100', 'This is the height you want your thumbnail images(in pixels) to be automatically resized to.', 'string')[0m
+  [4;35;1mSetting Exists (0.4ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'dummy_watermark_enabled') LIMIT 1[0m
+  [4;36;1mSetting Create (0.8ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('dummy_watermark_enabled', 'public', '0', 'This Enables an HTML Dummy Watermark over images. This is not a true watermark, it is designed to fool users without HTML experience. The actual image can still be viewed by a knowledgable user.', 'bool')[0m
+  [4;35;1mSetting Exists (0.8ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Create (0.9ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('tooltips_enabled', 'public', '1', 'This enables tooltips when your mouse hovers over an image. This will make pages load a tiny bit slower, due to the extra code.', 'bool')[0m
+  [4;35;1mSetting Exists (0.9ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Create (2.2ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('tooltip_width', 'public', '300', 'This sets the size(in px) of the tooltips(if enabled). ', 'string')[0m
+  [4;35;1mSetting Exists (0.9ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'maximum_uploadable_files') LIMIT 1[0m
+  [4;36;1mSetting Create (2.3ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('maximum_uploadable_files', 'public', '10', 'This is the number of files you can upload at one time.', 'string')[0m
+  [4;35;1mSetting Exists (0.6ms)[0m   [0mSELECT "settings".id FROM "settings" WHERE ("settings"."name" = 'theme') LIMIT 1[0m
+  [4;36;1mSetting Create (0.7ms)[0m   [0;1mINSERT INTO "settings" ("name", "setting_type", "value", "description", "item_type") VALUES('theme', 'public', 'mocha', 'The Visual Theme of your gallery, the look and feel', 'custom')[0m
+  [4;35;1mSQL (96.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('5')[0m
+Migrating to AddSessions (6)
+  [4;36;1mSQL (96.2ms)[0m   [0;1mCREATE TABLE "sessions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "session_id" varchar(255), "data" text, "updated_at" datetime) [0m
+  [4;35;1mSQL (88.9ms)[0m   [0mCREATE INDEX "index_sessions_on_session_id" ON "sessions" ("session_id")[0m
+  [4;36;1mSQL (86.2ms)[0m   [0;1mCREATE INDEX "index_sessions_on_updated_at" ON "sessions" ("updated_at")[0m
+  [4;35;1mSQL (83.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('6')[0m
+Migrating to CreateHits (7)
+  [4;36;1mSQL (117.0ms)[0m   [0;1mCREATE TABLE "hits" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "image_id" integer NOT NULL, "hits" integer DEFAULT 0) [0m
+  [4;35;1mSQL (78.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('7')[0m
+Migrating to CreateTags (8)
+  [4;36;1mSQL (76.4ms)[0m   [0;1mCREATE TABLE "tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "image_id" integer, "name" text, "parent_id" integer DEFAULT 0, "created_at" datetime) [0m
+  [4;35;1mSQL (72.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('8')[0m
+Migrating to CreateSimpleCaptchaData (9)
+  [4;36;1mSQL (73.6ms)[0m   [0;1mCREATE TABLE "simple_captcha_data" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar(40), "value" varchar(6), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (83.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('9')[0m
+  [4;36;1mSQL (1.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (1.0ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (1.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("categories")[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mPRAGMA index_list("comments")[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mPRAGMA index_info('index_comments_on_image_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_list("hits")[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("images")[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mPRAGMA index_list("sessions")[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mPRAGMA index_info('index_sessions_on_updated_at')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mPRAGMA index_info('index_sessions_on_session_id')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mPRAGMA index_list("settings")[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mPRAGMA index_info('index_settings_on_name')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("simple_captcha_data")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_list("tags")[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mPRAGMA index_list("users")[0m
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-19 23:04:22) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.9ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mImage Load (0.6ms)[0m   [0mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mComment Load (0.5ms)[0m   [0;1mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.9ms)
+  [4;35;1mCategory Load (0.8ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.7ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (51.1ms)
+Completed in 165ms (View: 94, DB: 7) | 200 OK [http://0.0.0.0/]
+
+
+Processing BrowseController#rss (for 127.0.0.1 at 2011-06-19 23:06:15) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (1.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mImage Load (0.6ms)[0m   [0;1mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 10[0m
+Rendering browse/rss
+Completed in 68ms (View: 8, DB: 7) | 200 OK [http://0.0.0.0/browse/rss]
+
+
+Processing BrowseController#view_category (for 127.0.0.1 at 2011-06-19 23:06:34) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  Parameters: {"id"=>"1"}
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (1.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (1.1ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mCategory Load (0.6ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 1) [0m
+  [4;35;1mImage Load (0.6ms)[0m   [0mSELECT * FROM "images" WHERE (category_id = '1') ORDER BY created_at DESC LIMIT 1000[0m
+Rendering template within layouts/application
+Rendering browse/view_category
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.5ms)
+  [4;36;1mCategory Load (0.7ms)[0m   [0;1mSELECT * FROM "categories" LIMIT 500[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;35;1mTag Load (0.6ms)[0m   [0mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (31.9ms)
+Completed in 151ms (View: 77, DB: 8) | 200 OK [http://0.0.0.0/browse/view_category/1]
+
+
+Processing BrowseController#view_category (for 127.0.0.1 at 2011-06-19 23:06:43) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  Parameters: {"id"=>"2"}
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mCategory Load (0.6ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 2) [0m
+  [4;36;1mImage Load (0.6ms)[0m   [0;1mSELECT * FROM "images" WHERE (category_id = '2') ORDER BY created_at DESC LIMIT 1000[0m
+Rendering template within layouts/application
+Rendering browse/view_category
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.5ms)
+  [4;35;1mCategory Load (0.7ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.5ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (29.7ms)
+Completed in 148ms (View: 75, DB: 8) | 200 OK [http://0.0.0.0/browse/view_category/2]
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 10:22:37) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;36;1mSetting Load (1.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mImage Load (0.8ms)[0m   [0mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mComment Load (0.5ms)[0m   [0;1mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (2.0ms)
+  [4;35;1mCategory Load (0.8ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.4ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (51.3ms)
+Completed in 177ms (View: 97, DB: 8) | 200 OK [http://0.0.0.0/]
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 10:25:36) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (0.9ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mImage Load (0.8ms)[0m   [0;1mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mComment Load (0.5ms)[0m   [0mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (2.1ms)
+  [4;36;1mCategory Load (0.9ms)[0m   [0;1mSELECT * FROM "categories" LIMIT 500[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;35;1mTag Load (0.5ms)[0m   [0mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (163.5ms)
+Completed in 282ms (View: 208, DB: 9) | 200 OK [http://0.0.0.0/]
+
+
+Processing BrowseController#view_category (for 127.0.0.1 at 2011-06-20 10:25:45) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  Parameters: {"id"=>"1"}
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mCategory Load (0.8ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 1) [0m
+  [4;36;1mImage Load (0.9ms)[0m   [0;1mSELECT * FROM "images" WHERE (category_id = '1') ORDER BY created_at DESC LIMIT 1000[0m
+Rendering template within layouts/application
+Rendering browse/view_category
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (2.0ms)
+  [4;35;1mCategory Load (0.7ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.6ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (30.6ms)
+Completed in 191ms (View: 106, DB: 8) | 200 OK [http://0.0.0.0/browse/view_category/1]
+
+
+Processing BrowseController#view_category (for 127.0.0.1 at 2011-06-20 10:25:48) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  Parameters: {"id"=>"2"}
+  [4;35;1mSetting Load (1.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mCategory Load (0.6ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 2) [0m
+  [4;35;1mImage Load (0.8ms)[0m   [0mSELECT * FROM "images" WHERE (category_id = '2') ORDER BY created_at DESC LIMIT 1000[0m
+Rendering template within layouts/application
+Rendering browse/view_category
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.9ms)
+  [4;36;1mCategory Load (0.9ms)[0m   [0;1mSELECT * FROM "categories" LIMIT 500[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;35;1mTag Load (0.4ms)[0m   [0mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (30.3ms)
+Completed in 152ms (View: 77, DB: 8) | 200 OK [http://0.0.0.0/browse/view_category/2]
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 10:25:51) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (1.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mImage Load (0.7ms)[0m   [0mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mComment Load (0.7ms)[0m   [0;1mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mSetting Load (0.8ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.8ms)
+  [4;35;1mCategory Load (1.0ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.5ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (55.6ms)
+Completed in 299ms (View: 103, DB: 10) | 200 OK [http://0.0.0.0/]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 10:26:05) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+
+
+ActionController::RoutingError (No route matches "/add" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 10:26:15) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;35;1mSetting Load (1.2ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (1.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (0.9ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (1.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (1.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (0.9ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mImage Load (0.6ms)[0m   [0;1mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mComment Load (0.5ms)[0m   [0mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mSetting Load (1.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.7ms)
+  [4;36;1mCategory Load (0.7ms)[0m   [0;1mSELECT * FROM "categories" LIMIT 500[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;35;1mTag Load (0.6ms)[0m   [0mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (52.9ms)
+Completed in 203ms (View: 99, DB: 12) | 200 OK [http://0.0.0.0/]
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 10:26:21) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;35;1mSetting Load (0.9ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;36;1mSetting Load (0.8ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;36;1mSetting Load (0.7ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;35;1mImage Load (0.6ms)[0m   [0mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mComment Load (0.5ms)[0m   [0;1mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (1.7ms)
+  [4;35;1mCategory Load (0.8ms)[0m   [0mSELECT * FROM "categories" LIMIT 500[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;36;1mTag Load (0.5ms)[0m   [0;1mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (57.8ms)
+Completed in 176ms (View: 104, DB: 9) | 200 OK [http://0.0.0.0/browse]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 12:00:48) [GET]
+  Session ID: 05066cfff3cd17c9278ad1e0a7aed58b
+
+
+ActionController::RoutingError (No route matches "/photos" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 12:01:51) [GET]
+  Session ID: 05066cfff3cd17c9278ad1e0a7aed58b
+
+
+ActionController::RoutingError (No route matches "/photos" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 12:01:53) [GET]
+  Session ID: 05066cfff3cd17c9278ad1e0a7aed58b
+
+
+ActionController::RoutingError (No route matches "/photos" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 12:01:54) [GET]
+  Session ID: 05066cfff3cd17c9278ad1e0a7aed58b
+
+
+ActionController::RoutingError (No route matches "/photos" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-06-20 12:01:55) [GET]
+  Session ID: 05066cfff3cd17c9278ad1e0a7aed58b
+
+
+ActionController::RoutingError (No route matches "/photos" with {:method=>:get}):
+    /vendor/rails/actionpack/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /vendor/rails/actionpack/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /vendor/rails/actionpack/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:103:in `handle_dispatch'
+    /vendor/rails/railties/lib/webrick_server.rb:74:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+    /vendor/rails/railties/lib/webrick_server.rb:60:in `dispatch'
+    /vendor/rails/railties/lib/commands/servers/webrick.rb:66
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /vendor/rails/activesupport/lib/active_support/dependencies.rb:153:in `require'
+    /vendor/rails/railties/lib/commands/server.rb:49
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `gem_original_require'
+    /usr/local/lib/site_ruby/1.8/rubygems/custom_require.rb:36:in `require'
+    script/server:3
+
+Rendering /home/angel/onyx_0.3.2/vendor/rails/actionpack/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing BrowseController#index (for 127.0.0.1 at 2011-06-20 12:04:30) [GET]
+  Session ID: 02ad09c6fb1c42c05865eab30fdab105
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'site_keywords') LIMIT 1[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'site_description') LIMIT 1[0m
+  [4;35;1mSetting Load (0.8ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'tooltips_enabled') LIMIT 1[0m
+  [4;36;1mSetting Load (0.9ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'tooltip_width') LIMIT 1[0m
+  [4;35;1mSetting Load (0.7ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'theme') LIMIT 1[0m
+  [4;36;1mImage Load (0.8ms)[0m   [0;1mSELECT * FROM "images" ORDER BY created_at DESC LIMIT 5[0m
+  [4;35;1mComment Load (0.5ms)[0m   [0mSELECT * FROM "comments" ORDER BY created_at DESC LIMIT 5[0m
+  [4;36;1mSetting Load (0.6ms)[0m   [0;1mSELECT * FROM "settings" WHERE (name = 'welcome_title') LIMIT 1[0m
+  [4;35;1mSetting Load (0.6ms)[0m   [0mSELECT * FROM "settings" WHERE (name = 'welcome_message') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering browse/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:20)
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_rhtml_app47views47layouts47application46rhtml at /home/angel/onyx_0.3.2/app/views/layouts/application.rhtml:21)
+Rendered browse/_top_bar (3.3ms)
+  [4;36;1mCategory Load (0.8ms)[0m   [0;1mSELECT * FROM "categories" LIMIT 500[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 1) LIMIT 10000[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count("images".id) AS count_id FROM "images" WHERE (category_id = 2) LIMIT 10000[0m
+  [4;35;1mTag Load (0.5ms)[0m   [0mSELECT name, count(name) FROM "tags" GROUP BY name LIMIT 1000[0m
+Rendered browse/_right_menu (53.1ms)
+Completed in 189ms (View: 113, DB: 9) | 200 OK [http://0.0.0.0/]
