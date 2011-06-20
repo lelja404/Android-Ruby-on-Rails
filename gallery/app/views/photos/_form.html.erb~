@@ -51,11 +51,7 @@
     <%= f.label :user_id %><br />
     <%= f.text_field :user_id %>
   </div>
-  <div class="field">
-    <%= f.label :photo_id %><br />
-    <%= f.text_field :photo_id %>
-  </div>
-  <div class="actions">
+    <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
