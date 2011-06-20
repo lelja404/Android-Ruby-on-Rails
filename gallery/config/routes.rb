@@ -1,4 +1,6 @@
 Gallery::Application.routes.draw do |map|
+  resources :users
+
   resources :photos
 
   # The priority is based upon order of creation:
