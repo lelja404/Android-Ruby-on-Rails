@@ -14,11 +14,8 @@ class PhotosController < ApplicationController
   # GET /photos/1.xml
   def show
     @photo = Photo.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @photo }
-    end
+    @comment=Comment.new
+    
   end
 
   # GET /photos/new
@@ -41,7 +38,8 @@ class PhotosController < ApplicationController
   # POST /photos.xml
   def create
     @photo = Photo.new(params[:photo])
-    @post.user = @current_user
+    @user = User.create( params[:user] )
+    @photo.user = @current_user
     respond_to do |format|
       if @photo.save
         format.html { redirect_to(@photo, :notice => 'Photo was successfully created.') }
