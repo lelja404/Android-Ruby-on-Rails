@@ -61,8 +61,7 @@ public class ExampleActivity extends Activity {
             	nameList = nameElement.getChildNodes();
             	idList = idElement.getChildNodes();
 
-            	name[i]="http://10.0.2.2:3000/system/images/"+((Node) idList.item(0)).getNodeValue()+
-            	"/original/"+ ((Node) nameList.item(0)).getNodeValue();
+            	name[i]="http://10.0.2.2:3000/system/images/"+((Node) idList.item(0)).getNodeValue()+"/original/"+((Node) nameList.item(0)).getNodeValue();
             	id[i]=Integer.parseInt(((Node) idList.item(0)).getNodeValue());
             }
             	 URL url1 = new URL("http://10.0.2.2:3000/comments.xml");
@@ -97,7 +96,7 @@ public class ExampleActivity extends Activity {
        	
                  
         list=(ListView)findViewById(R.id.list);
-        adapter=new LazyAdapter(this, name,comments,id,photo_id);
+        adapter=new LazyAdapter(this,name,comments,id,photo_id);
         list.setAdapter(adapter);
         
         Button b=(Button)findViewById(R.id.button1);
@@ -120,6 +119,5 @@ public class ExampleActivity extends Activity {
             
         }
     };
-    
-    
-}
+}   
+  
