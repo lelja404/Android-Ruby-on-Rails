@@ -1,2 +1,0 @@
-class Comment2 < ActiveRecord::Base
-end

@@ -1,5 +1,0 @@
-<h1>New photo</h1>
-<b>User:</b> <%= @current_user.login %>
-<%= render 'form' %>
- 
-<%= link_to 'Back', photo_path %>
